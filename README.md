@@ -16,6 +16,8 @@ Este proyecto se enfoca en la implementación práctica de dicho enfoque mediant
 ## 3. Marco teórico
 ### 3.1 Arquitectura Transformer Encoder–Decoder
 
+---
+
 El modelo utilizado en este proyecto se basa en una arquitectura Transformer de tipo encoder–decoder, la cual ha demostrado un alto desempeño en tareas de procesamiento de datos secuenciales. En este caso, se emplea el modelo Donut (Document Understanding Transformer), diseñado específicamente para la comprensión de documentos visuales.
 
 La arquitectura está compuesta por dos bloques principales:
@@ -34,6 +36,8 @@ Este enfoque permite tratar la imagen como una secuencia, de manera similar a co
 
 ### 3.2 Representación mediante embeddings
 
+---
+
 Una vez dividida la imagen en patches (por ejemplo, una imagen de 384×384 en bloques de 16×16 genera 576 tokens), cada patch es proyectado a un espacio vectorial de alta dimensión (en este caso, 1024 dimensiones).
 
 Estos embeddings contienen información relevante sobre:
@@ -46,6 +50,8 @@ Posición espacial
 Posteriormente, el encoder transforma estos vectores iniciales en representaciones más complejas que incorporan contexto global, permitiendo que cada token tenga información de toda la imagen.
 
 ### 3.3 Mecanismo de atención
+
+---
 
 El componente central del Transformer es el mecanismo de self-attention, el cual permite que cada token interactúe con todos los demás tokens de la secuencia.
 
@@ -78,6 +84,8 @@ En la implementación desarrollada, este comportamiento se visualiza mediante ma
 
 ### 3.4 Generación de secuencias (Decoder)
 
+---
+
 El decoder funciona de manera autoregresiva, generando la salida token por token. En cada paso:
 
 Recibe los tokens previamente generados
@@ -99,6 +107,8 @@ Campos específicos del documento
 
 ### 3.5 Innovaciones del modelo Donut
 
+---
+
 El modelo Donut introduce varias innovaciones importantes frente a enfoques tradicionales:
 
 Eliminación del OCR: no requiere extracción explícita de texto, lo que reduce errores acumulativos.
@@ -113,6 +123,8 @@ El desarrollo de este proyecto se basó en la implementación de un modelo Trans
 
 ### 4.1 Enfoque general
 
+---
+
 El enfoque adoptado consiste en utilizar un modelo preentrenado, evitando el entrenamiento desde cero, con el objetivo de enfocarse en:
 
 - Comprender la arquitectura del modelo  
@@ -123,6 +135,8 @@ El enfoque adoptado consiste en utilizar un modelo preentrenado, evitando el ent
 Se desarrolló una aplicación interactiva que permite ejecutar el modelo sobre imágenes de documentos y explorar sus representaciones internas.
 
 ### 4.2 Herramientas utilizadas
+
+---
 
 Para la implementación del sistema se utilizaron las siguientes tecnologías:
 
@@ -138,6 +152,8 @@ Para la implementación del sistema se utilizaron las siguientes tecnologías:
 Estas herramientas permiten integrar tanto la inferencia del modelo como la visualización de sus componentes internos.
 
 ### 4.3 Uso de pesos preentrenados
+
+---
 
 En este proyecto se utilizó el modelo preentrenado: "naver-clova-ix/donut-base-finetuned-docvqa"
 Este modelo ya ha sido entrenado para tareas de comprensión de documentos, específicamente para responder preguntas sobre imágenes.
@@ -160,6 +176,9 @@ VisionEncoderDecoderModel: contiene la arquitectura completa encoder–decoder
 El modelo se configura en modo evaluación para evitar el cálculo de gradientes: model.eval()
 
 ### 4.4 Proceso de inferencia
+
+---
+
 El proceso de inferencia implementado en el proyecto sigue los siguientes pasos:
   4.4.1. Carga de la imagen
       a. El usuario sube una imagen mediante la interfaz
@@ -209,6 +228,9 @@ decoded = processor.batch_decode(outputs)[0]
       b. Se obtiene el texto final
 
 ### 4.5 Visualización del modelo
+
+---
+
 Adicionalmente, se implementaron módulos interactivos para analizar el comportamiento interno del modelo:
   - Visualización de embeddings
   - División de la imagen en patches
@@ -218,10 +240,289 @@ Adicionalmente, se implementaron módulos interactivos para analizar el comporta
 Esto permite no solo ejecutar el modelo, sino también entender su funcionamiento interno de manera visual.
 
 ### 4.6 Consideraciones de implementación
+
+---
+
   - El modelo se ejecuta en CPU, lo que garantiza compatibilidad en diferentes equipos
   - Se utiliza caché para evitar recargar el modelo múltiples veces
   - Se mantiene un historial de consultas para análisis posterior
   - Se optimiza el flujo para ejecución en tiempo real durante la sustentación
-  
-      
 
+
+## 5. Desarrollo e implementación
+
+En esta sección se describe detalladamente cómo ejecutar el proyecto, cómo se cargan los pesos del modelo y cómo se realiza el proceso completo de inferencia, desde la entrada de datos hasta la generación del resultado.
+
+---
+
+### 5.1 Estructura general del sistema
+
+---
+
+El sistema fue desarrollado como una aplicación interactiva utilizando Streamlit, permitiendo al usuario:
+
+- Cargar una imagen de documento
+- Ingresar una pregunta
+- Ejecutar el modelo
+- Visualizar resultados y análisis internos
+
+El flujo general del sistema es:
+Usuario → Interfaz (Streamlit) → Preprocesamiento → Modelo Transformer → Decodificación → Visualización
+
+### 5.2 Ejecución del proyecto
+
+---
+
+Para ejecutar el proyecto se deben seguir los siguientes pasos:
+
+1. Clonar el repositorio:
+
+```bash
+git clone https://github.com/TU_USUARIO/TU_REPOSITORIO.git
+cd TU_REPOSITORIO
+```
+
+2. Instalar dependencias:
+```bash
+pip install -r requirements.txt
+```
+
+3. Ejecutar la aplicación:
+```Bash
+streamlit run app.py
+```
+
+4. Abrir en el navegador:
+```Bash
+http://localhost:8501
+```
+
+5.3 Carga del modelo y pesos preentrenados
+
+---
+
+El modelo utilizado es:
+```Bash
+naver-clova-ix/donut-base-finetuned-docvqa
+```
+
+Este modelo se descarga automáticamente desde Hugging Face al ejecutarse por primera vez.
+
+Implementación:
+```Python
+@st.cache_resource
+def load_model():
+    processor = DonutProcessor.from_pretrained(
+        "naver-clova-ix/donut-base-finetuned-docvqa"
+    )
+    model = VisionEncoderDecoderModel.from_pretrained(
+        "naver-clova-ix/donut-base-finetuned-docvqa"
+    )
+    model.eval()
+    return processor, model
+```
+
+Explicación:
+- DonutProcessor:
+        - Convierte imágenes en tensores
+        - Tokeniza texto de entrada y salida
+  
+- VisionEncoderDecoderModel:
+        - Contiene el encoder (Swin Transformer)
+        - Contiene el decoder (BART)
+  
+- model.eval():
+        - Desactiva entrenamiento
+        - Optimiza inferencia
+  
+- @st.cache_resource:
+        - Evita recargar el modelo en cada ejecución
+        - Mejora el rendimiento significativamente
+  
+5.4 Configuración del dispositivo
+
+---
+
+El modelo se ejecuta en CPU:
+```Python
+device = "cpu"
+model.to(device)
+```
+Esto garantiza que el sistema funcione en cualquier computador sin necesidad de GPU.
+
+5.5 Entrada de datos
+
+---
+
+El usuario proporciona dos entradas:
+    1. Imagen del documento
+    2. Pregunta en lenguaje natural
+    
+Implementación:
+```Python
+uploaded_file = st.file_uploader("Subir imagen", type=["jpg","png","jpeg"])
+question = st.text_input("Pregunta")
+```
+Procesamiento de imagen:
+```Python
+image = Image.open(uploaded_file).convert("RGB")
+```
+5.6 Preprocesamiento
+
+---
+
+El modelo requiere imágenes de tamaño fijo:
+```Python
+image_resized = image.resize((384,384))
+```
+Luego se convierte a tensor:
+```Python
+pixel_values = processor(
+    image_resized,
+    return_tensors="pt"
+).pixel_values.to(device)
+```
+Explicación:
+    - Se transforma la imagen en un tensor
+    - Se normaliza automáticamente
+    - Se prepara como entrada del encoder
+    
+5.7 Construcción del prompt
+
+---
+
+El modelo utiliza un formato estructurado:
+```Python
+task_prompt = f"<s_docvqa><s_question>{question}</s_question>"
+```
+Explicación:
+    - <s_docvqa> indica la tarea
+    - <s_question> contiene la pregunta
+    - Este formato guía al decoder
+    
+5.8 Tokenización del prompt
+
+---
+
+```Python
+decoder_input_ids = processor.tokenizer(
+    task_prompt,
+    return_tensors="pt"
+).input_ids.to(device)
+```
+Esto convierte el texto en tokens numéricos para el decoder.
+
+5.9 Proceso de inferencia
+
+---
+
+El modelo genera la respuesta:
+```Python
+with torch.no_grad():
+    gen = model.generate(
+        pixel_values,
+        decoder_input_ids=decoder_input_ids,
+        max_length=512
+    )
+```
+Explicación:
+    - pixel_values: entrada visual
+    - decoder_input_ids: entrada textual
+    - generate(): produce la secuencia de salida
+    - torch.no_grad(): optimiza memoria y velocidad
+    
+5.10 Decodificación de la salida
+
+---
+
+```Python
+decoded = processor.batch_decode(gen, skip_special_tokens=False)[0]
+```
+Luego se limpia el texto:
+
+```Python
+import re
+text = re.sub(r"<.*?>", "", decoded).strip()
+```
+
+Explicación:
+    - Se eliminan tokens especiales
+    - Se obtiene texto legible
+    
+5.11 Almacenamiento de resultados
+
+---
+
+Los resultados se guardan para análisis posterior:
+```Python
+st.session_state.result = {
+    "text": text,
+    "pixel_values": pixel_values.cpu(),
+    "tokens": len(gen[0]),
+    "chars": len(text),
+    "latency": latency
+}
+```
+
+También se guarda historial:
+```Python
+st.session_state.history.append({
+    "question": question,
+    "answer": text,
+    "latency": latency,
+    "tokens": len(gen[0]),
+    "chars": len(text)
+})
+```
+
+5.12 Visualización del modelo
+
+---
+
+Se implementaron múltiples módulos interactivos:
+Embeddings
+
+    - Visualización de vectores de 1024 dimensiones
+Patches
+
+    - División en 576 tokens visuales (24x24)
+Attention
+    - Mapas de atención entre tokens
+    - Visualización sobre la imagen
+Q, K, V
+    - Simulación del mecanismo interno del Transformer
+Resultados
+    - Métricas:
+        - Exact Match
+        - F1 Score
+        - ANLS
+        
+5.13 Flujo completo del sistema
+
+---
+
+Imagen → Resize → Tensor → Encoder (Swin)
+        ↓
+Embeddings → Attention → Representación contextual
+        ↓
+Decoder (BART) + Prompt
+        ↓
+Generación de tokens
+        ↓
+Texto final
+
+5.14 Consideraciones importantes
+
+---
+
+    - No se realiza entrenamiento desde cero
+    - Se utilizan pesos preentrenados
+    - El sistema es completamente end-to-end (sin OCR)
+    - La inferencia es en tiempo real
+    - Se incluye visualización interna del modelo
+    
+5.15 Conclusión de la implementación
+
+---
+
+La implementación permite no solo ejecutar el modelo Donut, sino también comprender en profundidad su funcionamiento interno, cumpliendo con los objetivos del proyecto al integrar inferencia, visualización y análisis del modelo Transformer encoder–decoder.
