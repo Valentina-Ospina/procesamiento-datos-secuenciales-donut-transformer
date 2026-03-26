@@ -564,6 +564,7 @@ Esto facilita la validación cualitativa del desempeño del modelo.
 ### 6.3 Análisis del mecanismo de atención
 
 ---
+<img width="1600" height="851" alt="image" src="https://github.com/user-attachments/assets/ecb8da64-90be-4bb2-99ad-69d4d7ccea0b" />
 
 Se implementó una visualización del mapa de atención del encoder.
 
@@ -600,6 +601,8 @@ Se visualizó:
 
 ---
 
+<img width="1600" height="717" alt="image" src="https://github.com/user-attachments/assets/ce56ab65-5632-4d4e-ae47-d339da7a887e" />
+
 El modelo divide la imagen en:
 
 - 576 tokens (24 x 24)
@@ -620,6 +623,7 @@ Se analizó:
 
 ---
 
+<img width="1600" height="677" alt="image" src="https://github.com/user-attachments/assets/e932f6e4-22b4-43f5-926e-68d423000a25" />
 Se implementó una simulación del cálculo de Query, Key y Value a partir de los embeddings.
 
 Esto permitió analizar:
@@ -816,5 +820,5 @@ La implementación desarrollada no solo permite ejecutar el modelo, sino tambié
 
     [11] Pandas Development Team, "Pandas Documentation," 2023. [Online]. Available: https://pandas.pydata.org
 
-[12] Matplotlib Development Team, "Matplotlib: Visualization with Python," 2023. [Online]. Available: https://matplotlib.org
+    [12] Matplotlib Development Team, "Matplotlib: Visualization with Python," 2023. [Online]. Available: https://matplotlib.org
 
