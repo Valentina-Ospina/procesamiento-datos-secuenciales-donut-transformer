@@ -529,3 +529,117 @@ Texto final
 ---
 
 La implementación permite no solo ejecutar el modelo Donut, sino también comprender en profundidad su funcionamiento interno, cumpliendo con los objetivos del proyecto al integrar inferencia, visualización y análisis del modelo Transformer encoder–decoder.
+
+## 6. Resultados y análisis
+
+En esta sección se presentan los resultados obtenidos al ejecutar el modelo Donut sobre diferentes imágenes de documentos, junto con un análisis detallado de su desempeño, visualizaciones internas y métricas de evaluación.
+
+---
+
+### 6.1 Resultados de inferencia
+
+---
+
+El modelo fue evaluado utilizando imágenes de documentos junto con preguntas en lenguaje natural. El sistema genera respuestas automáticamente mediante inferencia.
+
+Ejemplo de resultado:
+
+- Pregunta: What is the total?
+- Predicción del modelo: 154.32
+
+El tiempo de respuesta promedio observado fue bajo, permitiendo inferencia en tiempo real en CPU.
+
+### 6.2 Visualización de la entrada y salida
+
+---
+
+La aplicación permite visualizar:
+
+- Imagen original cargada por el usuario
+- Pregunta realizada
+- Respuesta generada por el modelo
+
+Esto facilita la validación cualitativa del desempeño del modelo.
+
+### 6.3 Análisis del mecanismo de atención
+
+---
+
+Se implementó una visualización del mapa de atención del encoder.
+
+El modelo genera una matriz de atención que representa cómo cada token visual interactúa con los demás.
+
+#### Interpretación:
+
+- Zonas con mayor intensidad indican mayor relevancia
+- El token CLS resume la información global de la imagen
+- Se puede observar qué regiones de la imagen influyen en la respuesta
+
+Esto permite entender el comportamiento interno del modelo, evidenciando el funcionamiento del mecanismo de self-attention.
+
+### 6.4 Análisis de embeddings
+
+---
+
+Cada imagen es transformada en una secuencia de embeddings de dimensión 1024.
+
+Se visualizó:
+
+- Distribución de valores del embedding
+- Representación en forma de mapa de calor
+- Activación por token visual
+
+#### Observaciones:
+
+- Los embeddings capturan información estructural del documento
+- Regiones con texto presentan mayor activación
+- Bordes y patrones visuales son representados en el espacio latente
+
+
+### 6.5 Análisis de tokens visuales (patches)
+
+---
+
+El modelo divide la imagen en:
+
+- 576 tokens (24 x 24)
+- Cada token corresponde a un patch de 16 x 16 píxeles
+
+Se analizó:
+
+- Posición de cada token
+- Importancia relativa (norma del embedding)
+- Relación entre ubicación y relevancia
+
+#### Observaciones:
+
+- Los tokens con mayor importancia suelen corresponder a regiones con información clave (texto relevante)
+- Las zonas vacías o fondo tienen menor impacto en la inferencia
+
+### 6.6 Análisis del mecanismo Q, K y V
+
+---
+
+Se implementó una simulación del cálculo de Query, Key y Value a partir de los embeddings.
+
+Esto permitió analizar:
+
+- Magnitud de Q, K y V
+- Distribución en el espacio latente
+- Influencia de cada token en el cálculo de atención
+
+#### Observaciones:
+
+- Tokens con mayor norma en Q tienen mayor influencia
+- La atención depende de la similitud entre Q y K
+- El mecanismo permite modelar relaciones complejas entre regiones de la imagen
+
+### 6.7 Métricas de evaluación
+
+---
+
+Se implementaron tres métricas principales:
+
+#### Exact Match (EM)
+
+Mide si la predicción coincide exactamente con la respuesta real.
