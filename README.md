@@ -792,4 +792,29 @@ La implementación desarrollada no solo permite ejecutar el modelo, sino tambié
 - Visualización interactiva
 - Interpretación del modelo
 
+## 8. Referencias
+
+    [1] J. Kim, J. Lee, J. Park, and J. Kim, "OCR-free Document Understanding Transformer," arXiv preprint arXiv:2111.15664, 2021. [Online]. Available: https://arxiv.org/abs/2111.15664
+
+    [2] NAVER Clova AI, "Donut: OCR-free Document Understanding Transformer," Hugging Face, 2023. [Online]. Available: https://huggingface.co/naver-clova-ix/donut-base
+
+    [3] NAVER Clova AI, "Donut base finetuned on DocVQA," Hugging Face, 2023. [Online]. Available: https://huggingface.co/naver-clova-ix/donut-base-finetuned-docvqa
+
+    [4] T. Wolf et al., "Transformers: State-of-the-Art Natural Language Processing," in Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing (EMNLP), 2020.
+
+    [5] PyTorch Team, "PyTorch: An imperative style, high-performance deep learning library," 2023. [Online]. Available: https://pytorch.org
+
+    [6] Hugging Face, "Transformers Library Documentation," 2023. [Online]. Available: https://huggingface.co/docs/transformers
+
+    [7] Streamlit Inc., "Streamlit Documentation," 2023. [Online]. Available: https://docs.streamlit.io
+
+    [8] Plotly Technologies Inc., "Plotly Python Graphing Library," 2023. [Online]. Available: https://plotly.com/python/
+
+    [9] RapidFuzz Library, "RapidFuzz Documentation," 2023. [Online]. Available: https://maxbachmann.github.io/RapidFuzz/
+
+    [10] NumPy Developers, "NumPy: Fundamental package for scientific computing with Python," 2023. [Online]. Available: https://numpy.org
+
+    [11] Pandas Development Team, "Pandas Documentation," 2023. [Online]. Available: https://pandas.pydata.org
+
+[12] Matplotlib Development Team, "Matplotlib: Visualization with Python," 2023. [Online]. Available: https://matplotlib.org
 
