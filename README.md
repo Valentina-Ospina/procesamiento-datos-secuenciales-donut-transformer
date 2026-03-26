@@ -14,7 +14,6 @@ En respuesta a estas limitaciones, han surgido modelos basados en arquitecturas 
 Este proyecto se enfoca en la implementación práctica de dicho enfoque mediante el desarrollo de una aplicación interactiva que permite explorar tanto el rendimiento del modelo como su funcionamiento interno. A través de una interfaz construida con Streamlit, el usuario puede realizar consultas sobre documentos y visualizar diferentes componentes del modelo, como embeddings, patches y mecanismos de atención.
 
 ## 3. Marco teórico
-
 ### 3.1 Arquitectura Transformer Encoder–Decoder
 
 El modelo utilizado en este proyecto se basa en una arquitectura Transformer de tipo encoder–decoder, la cual ha demostrado un alto desempeño en tareas de procesamiento de datos secuenciales. En este caso, se emplea el modelo Donut (Document Understanding Transformer), diseñado específicamente para la comprensión de documentos visuales.
@@ -108,4 +107,110 @@ Uso de Vision Transformer (Swin): mejora la captura de patrones visuales locales
 Flexibilidad en tareas: puede adaptarse a diferentes problemas como clasificación, extracción de información y VQA.
 Representación unificada: combina visión y lenguaje en un solo modelo. Estas características lo convierten en un modelo eficiente y robusto para tareas de comprensión de documentos.
 
-De esta manera, el trabajo no solo demuestra la viabilidad de los modelos OCR-free en tareas de comprensión documental, sino que también ofrece una herramienta didáctica para entender el comportamiento de los Transformers aplicados a visión por computadora.
+## 4. Metodología
+
+El desarrollo de este proyecto se basó en la implementación de un modelo Transformer encoder–decoder preentrenado para la tarea de Document Visual Question Answering (DocVQA), utilizando el modelo Donut.
+
+### 4.1 Enfoque general
+
+El enfoque adoptado consiste en utilizar un modelo preentrenado, evitando el entrenamiento desde cero, con el objetivo de enfocarse en:
+
+- Comprender la arquitectura del modelo  
+- Implementar el proceso de inferencia  
+- Analizar el comportamiento interno del Transformer  
+- Visualizar los componentes clave del modelo  
+
+Se desarrolló una aplicación interactiva que permite ejecutar el modelo sobre imágenes de documentos y explorar sus representaciones internas.
+
+### 4.2 Herramientas utilizadas
+
+Para la implementación del sistema se utilizaron las siguientes tecnologías:
+
+- Python: lenguaje principal de desarrollo  
+- Streamlit: construcción de la interfaz interactiva  
+- PyTorch (torch): ejecución del modelo y manejo de tensores  
+- Transformers (Hugging Face): carga del modelo y procesamiento  
+- PIL (Pillow): manipulación de imágenes  
+- NumPy y Pandas: procesamiento de datos  
+- Matplotlib, Seaborn y Plotly: visualización de resultados  
+- RapidFuzz: cálculo de métricas de evaluación  
+
+Estas herramientas permiten integrar tanto la inferencia del modelo como la visualización de sus componentes internos.
+
+### 4.3 Uso de pesos preentrenados
+
+En este proyecto se utilizó el modelo preentrenado: "naver-clova-ix/donut-base-finetuned-docvqa"
+Este modelo ya ha sido entrenado para tareas de comprensión de documentos, específicamente para responder preguntas sobre imágenes.
+
+La carga del modelo se realiza mediante la librería Transformers:
+
+```python
+from transformers import DonutProcessor, VisionEncoderDecoderModel
+
+processor = DonutProcessor.from_pretrained(
+    "naver-clova-ix/donut-base-finetuned-docvqa"
+)
+
+model = VisionEncoderDecoderModel.from_pretrained(
+    "naver-clova-ix/donut-base-finetuned-docvqa"
+)
+DonutProcessor: se encarga del preprocesamiento de la imagen y tokenización del texto
+VisionEncoderDecoderModel: contiene la arquitectura completa encoder–decoder
+El modelo se configura en modo evaluación para evitar el cálculo de gradientes: model.eval()
+```
+### 4.4 Proceso de inferencia
+El proceso de inferencia implementado en el proyecto sigue los siguientes pasos:
+  4.4.1. Carga de la imagen
+      a. El usuario sube una imagen mediante la interfaz
+      b. La imagen se convierte a formato RGB
+  4.4.2. Preprocesamiento
+      a. La imagen es redimensionada a 384×384 píxeles
+      b. Se convierte en tensores utilizando el processor
+        ```python
+        pixel_values = processor(image_resized, return_tensors="pt").pixel_values
+        ```
+  4.4.3. Construcción del prompt
+      a. Se define un prompt estructurado para la tarea DocVQA
+      ```python
+      task_prompt = "<s_docvqa><s_question>Pregunta</s_question>"
+      ```
+  4.4.4. Tokenización del prompt
+      ```python
+      decoder_input_ids = processor.tokenizer(
+        task_prompt,
+        return_tensors="pt"
+    ).input_ids
+      ```
+  4.4.5 Generación de la respuesta
+      ```python
+        outputs = model.generate(
+        pixel_values,
+        decoder_input_ids=decoder_input_ids,
+        max_length=512
+    )
+      ```
+  4.4.6 Decodificación de la salida
+     ```python
+      decoded = processor.batch_decode(outputs)[0]
+      ```
+  4.4.7 Postprocesamiento
+      a. Se eliminan tokens especiales
+      b. Se obtiene el texto final
+
+### 4.5 Visualización del modelo
+Adicionalmente, se implementaron módulos interactivos para analizar el comportamiento interno del modelo:
+  - Visualización de embeddings
+  - División de la imagen en patches
+  - Mapas de atención
+  - Representación de Q, K y V
+  - Métricas de desempeño
+Esto permite no solo ejecutar el modelo, sino también entender su funcionamiento interno de manera visual.
+
+### 4.6 Consideraciones de implementación
+  - El modelo se ejecuta en CPU, lo que garantiza compatibilidad en diferentes equipos
+  - Se utiliza caché para evitar recargar el modelo múltiples veces
+  - Se mantiene un historial de consultas para análisis posterior
+  - Se optimiza el flujo para ejecución en tiempo real durante la sustentación
+  
+      
+
