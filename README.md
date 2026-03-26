@@ -731,4 +731,65 @@ Además, las visualizaciones implementadas permiten comprender en profundidad el
 - La representación mediante embeddings
 - La interacción entre tokens visuales
 
+## 7. Conclusiones
+
+En este proyecto se implementó y analizó una arquitectura Transformer encoder–decoder aplicada a la tarea de Document Visual Question Answering (DocVQA), utilizando el modelo Donut con pesos preentrenados.
+
+### 7.1 Aprendizajes
+
+---
+
+A lo largo del desarrollo del proyecto se obtuvieron los siguientes aprendizajes:
+
+- Se comprendió en profundidad el funcionamiento de una arquitectura Transformer encoder–decoder aplicada a datos visuales y secuenciales.
+- Se analizó cómo una imagen puede ser transformada en una secuencia de tokens visuales mediante la división en patches.
+- Se entendió la importancia de los embeddings como representación numérica de la información visual.
+- Se estudió el mecanismo de atención (self-attention), identificando cómo el modelo aprende relaciones entre diferentes regiones de la imagen.
+- Se comprendió la generación de los tensores Q (queries), K (keys) y V (values), y su papel en el cálculo de la atención.
+- Se analizó el proceso completo de inferencia, desde la entrada (imagen + prompt) hasta la salida (texto generado).
+- Se evidenció cómo los modelos modernos pueden resolver tareas complejas sin necesidad de OCR explícito, utilizando enfoques end-to-end.
+
+Además, se logró implementar una interfaz interactiva que permite visualizar el comportamiento interno del modelo, lo cual facilita su interpretación.
+
+
+### 7.2 Limitaciones
+
+---
+
+A pesar de los buenos resultados obtenidos, el modelo presenta algunas limitaciones:
+
+- Sensibilidad a la calidad de la imagen: imágenes con baja resolución o ruido afectan el desempeño.
+- Dificultad para reconocer texto pequeño o con tipografías complejas.
+- Dependencia del dominio de entrenamiento: el modelo funciona mejor en documentos similares a los usados durante su entrenamiento.
+- Posibles errores en respuestas largas o complejas.
+- Limitaciones en la interpretabilidad completa del modelo, ya que algunas operaciones internas no son directamente accesibles (como las matrices reales de Q, K y V).
+- Alto consumo de memoria en comparación con modelos tradicionales.
+
+
+### 7.3 Posibles mejoras
+
+---
+
+Se identifican varias oportunidades de mejora para el sistema:
+
+- Implementar ejecución en GPU para mejorar el rendimiento y reducir el tiempo de inferencia.
+- Integrar modelos más recientes o versiones más grandes de Donut para mejorar la precisión.
+- Incorporar técnicas de fine-tuning con datasets específicos para mejorar el desempeño en dominios particulares.
+- Mejorar la interfaz gráfica para permitir análisis más avanzados del modelo.
+- Implementar visualizaciones más precisas del mecanismo de atención, incluyendo atención por cabeza (multi-head attention).
+- Optimizar el preprocesamiento de imágenes para mejorar la calidad de entrada.
+- Integrar evaluación automática con datasets estandarizados para obtener métricas más robustas.
+
+### 7.4 Conclusión general
+
+---
+
+El modelo Donut representa un avance significativo en el procesamiento de documentos, al eliminar la necesidad de sistemas OCR tradicionales y permitir un enfoque completamente end-to-end basado en Transformers.
+
+La implementación desarrollada no solo permite ejecutar el modelo, sino también analizar su funcionamiento interno, cumpliendo con los objetivos del proyecto al integrar:
+
+- Inferencia funcional
+- Visualización interactiva
+- Interpretación del modelo
+
 
