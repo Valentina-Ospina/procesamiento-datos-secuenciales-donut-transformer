@@ -154,10 +154,11 @@ processor = DonutProcessor.from_pretrained(
 model = VisionEncoderDecoderModel.from_pretrained(
     "naver-clova-ix/donut-base-finetuned-docvqa"
 )
+```
 DonutProcessor: se encarga del preprocesamiento de la imagen y tokenización del texto
 VisionEncoderDecoderModel: contiene la arquitectura completa encoder–decoder
 El modelo se configura en modo evaluación para evitar el cálculo de gradientes: model.eval()
-```
+
 ### 4.4 Proceso de inferencia
 El proceso de inferencia implementado en el proyecto sigue los siguientes pasos:
   4.4.1. Carga de la imagen
@@ -166,33 +167,43 @@ El proceso de inferencia implementado en el proyecto sigue los siguientes pasos:
   4.4.2. Preprocesamiento
       a. La imagen es redimensionada a 384×384 píxeles
       b. Se convierte en tensores utilizando el processor
-        ```python
-        pixel_values = processor(image_resized, return_tensors="pt").pixel_values
-        ```
+      
+```python
+pixel_values = processor(image_resized, return_tensors="pt").pixel_values
+ ```
+        
   4.4.3. Construcción del prompt
       a. Se define un prompt estructurado para la tarea DocVQA
-      ```python
-      task_prompt = "<s_docvqa><s_question>Pregunta</s_question>"
-      ```
+      
+```python
+task_prompt = "<s_docvqa><s_question>Pregunta</s_question>"
+```
+      
   4.4.4. Tokenización del prompt
-      ```python
-      decoder_input_ids = processor.tokenizer(
-        task_prompt,
-        return_tensors="pt"
-    ).input_ids
-      ```
+  
+```python
+decoder_input_ids = processor.tokenizer(
+task_prompt,
+return_tensors="pt"
+).input_ids
+```
+      
   4.4.5 Generación de la respuesta
-      ```python
-        outputs = model.generate(
-        pixel_values,
-        decoder_input_ids=decoder_input_ids,
-        max_length=512
-    )
-      ```
+  
+```python
+outputs = model.generate(
+pixel_values,
+decoder_input_ids=decoder_input_ids,
+max_length=512
+)
+```
+      
   4.4.6 Decodificación de la salida
-     ```python
-      decoded = processor.batch_decode(outputs)[0]
-      ```
+  
+```python
+decoded = processor.batch_decode(outputs)[0]
+```
+      
   4.4.7 Postprocesamiento
       a. Se eliminan tokens especiales
       b. Se obtiene el texto final
