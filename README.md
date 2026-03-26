@@ -487,11 +487,14 @@ Patches
 
     - División en 576 tokens visuales (24x24)
 Attention
+
     - Mapas de atención entre tokens
     - Visualización sobre la imagen
 Q, K, V
+
     - Simulación del mecanismo interno del Transformer
 Resultados
+
     - Métricas:
         - Exact Match
         - F1 Score
