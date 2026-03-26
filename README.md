@@ -641,5 +641,94 @@ Esto permitió analizar:
 Se implementaron tres métricas principales:
 
 #### Exact Match (EM)
-
 Mide si la predicción coincide exactamente con la respuesta real.
+```Bash
+EM = 1 si predicción == ground truth, 0 en otro caso
+```
+
+#### F1 Score
+Evalúa la similitud a nivel de palabras:
+```Bash
+F1 = 2 * (precisión * recall) / (precisión + recall)
+```
+
+#### ANLS (Approximate Normalized Levenshtein Similarity)
+Mide similitud considerando errores parciales:
+```Bash
+ANLS = 1 - (distancia_levenshtein / longitud_máxima)
+```
+
+### 6.8 Resultados cuantitativos
+
+---
+
+A partir de las pruebas realizadas:
+
+- El modelo logra buenas predicciones en documentos claros
+- El desempeño disminuye en imágenes con:
+  - Baja resolución
+  - Texto pequeño
+  - Ruido visual
+
+Ejemplo de análisis:
+
+- Exact Match: alto en respuestas cortas
+- F1 Score: permite evaluar coincidencias parciales
+- ANLS: útil para medir errores leves
+
+
+### 6.9 Análisis de rendimiento
+
+---
+
+Se evaluaron:
+
+- Tiempo de inferencia
+- Número de tokens generados
+- Longitud de la respuesta
+
+#### Observaciones:
+
+- Existe relación entre:
+  - Mayor número de tokens → mayor tiempo de inferencia
+- El modelo mantiene tiempos bajos incluso en CPU
+- La generación es eficiente para aplicaciones en tiempo real
+
+
+### 6.10 Visualizaciones adicionales
+
+---
+
+Se implementaron gráficas para analizar el comportamiento del modelo:
+
+- Tokens vs tiempo de inferencia
+- Longitud de respuesta vs tokens
+- Tiempo por consulta
+
+Estas visualizaciones permiten identificar patrones en el rendimiento del modelo.
+
+
+### 6.11 Limitaciones observadas en los resultados
+
+---
+
+Durante las pruebas se identificaron las siguientes limitaciones:
+
+- Sensibilidad a la calidad de la imagen
+- Dificultad con texto pequeño o borroso
+- Dependencia del formato del documento
+- Posibles errores en respuestas largas
+
+### 6.12 Conclusión del análisis
+
+---
+
+El modelo Donut demuestra un desempeño sólido en tareas de Document VQA, siendo capaz de generar respuestas coherentes sin necesidad de OCR.
+
+Además, las visualizaciones implementadas permiten comprender en profundidad el funcionamiento interno del modelo, especialmente:
+
+- El mecanismo de atención
+- La representación mediante embeddings
+- La interacción entre tokens visuales
+
+
